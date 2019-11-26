@@ -1,0 +1,104 @@
+<div class="black">
+    <div class="container">
+        <br>
+        <br>
+        <h2>Where do you<br>
+            want to go?</h2>
+
+        <!-- form_withはデフォルトでremote: trueの挙動になる -->
+        <br>
+        <%= form_with url: map_request_path, id:"modal", method: :get,remote: true do |f|%>
+        <%= f.text_field :address, class:"form-control", id:"validationDefault02", :placeholder => "Destination", style:"font-size: 20px;" %>
+        <br>
+        <%= f.select :travel_mode, [["car", "DRIVING"], ["train、bus", "TRANSIT"], ["walk", "WALKING"]], {},{class: "form-control"} %>
+        <br>
+        <div class="text-center">
+            <%= f.submit '目的地を検索', class:"btn btn-primary",'data-toggle':"modal",'data-target':"#exampleModal", id:"access_token_button",style:"display: none" %>
+        </div>
+        <br>
+        <br>
+        <br>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>your route</h2>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h4>目的地まで<div id="travel_time"></div>
+                        </h4>
+                        <br>
+                        <div id='map'></div>
+                        <div class="text-center">
+                            <div id="play_list_src" class="btn btn-light"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% end %>
+</div>
+
+
+
+
+
+<style>
+    #map {
+        height: 300px;
+    }
+</style>
+
+<script>
+    let mapInstance;
+    function initMap() {
+        mapInstance = new google.maps.Map(document.getElementById('map'), {
+            center: {
+                lat: 35.681236,
+                lng: 139.767125
+            },
+            zoom: 8
+        });
+    };
+    let directions = [];
+
+    //document.addEventListener("turbolinks:load", 
+    $(document).ready(function () {
+        console.log(location.href)
+        const searchParams = new URLSearchParams('?' + location.hash.substring(1));
+        const accessToken = searchParams.get('access_token');
+
+        console.log(accessToken);
+        if (accessToken != null) {
+            localStorage.setItem("accessToken", accessToken);
+
+            $.ajax({
+                url: 'https://api.spotify.com/v1/me',
+                headers: {
+                    'Authorization': 'Bearer ' + accessToken
+                },
+                success: function (response) {
+                    // userProfilePlaceholder.innerHTML = userProfileTemplate(response);
+                    console.log(response);
+                    localStorage.setItem("spotifyUserId", response.id);
+                    $('#access_token_button').show();
+
+                }
+            });
+        };
+        const local_access_token = localStorage.getItem("accessToken")
+        if (local_access_token) {
+            $('#access_token_button').show();
+        }
+    });
+</script>
+<!-- ここのcallback=initMapで実行 -->
+<script src="<%= @google_uri %>" async defer></script>
+</div>

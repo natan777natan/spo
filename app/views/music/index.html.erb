@@ -1,0 +1,137 @@
+<div class="music_container">
+    <div class="container">
+        <div class="text-center">
+            <br>
+            <br>
+            <h2>Play list</h2>
+            <br>
+            <iframe id="playlist" width="300" height="450" frameborder="0" allowtransparency="true"
+                allow="encrypted-media"></iframe>
+        </div>
+    </div>
+</div>
+
+<script src="https://sdk.scdn.co/spotify-player.js"></script>
+<script>
+    let track_uris = [];
+    window.onSpotifyWebPlaybackSDKReady = () => {
+        console.log(localStorage.getItem("accessToken"));
+
+        let player = new Spotify.Player({
+            name: 'A Spotify Web SDK Player',
+            getOAuthToken: callback => {
+                callback(
+                    localStorage.getItem("accessToken")
+                );
+            },
+            volume: 0.1
+        });
+        let obasan = function (playlist_id) {
+            $.ajax({
+                method: 'POST',
+                url: `https://api.spotify.com/v1/playlists/${playlist_id}/tracks`,
+                data: JSON.stringify({
+                    uris: track_uris
+                }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem("accessToken")
+                }
+            }).then(function (response) {
+                console.log("obasanResponse", response);
+
+            }).fail(function (error) {
+                console.log(error);
+            });
+        };
+        let odisan = function (track_uris) {
+            let spotifyUserId = localStorage.getItem("spotifyUserId");
+            $.ajax({
+                type: 'POST',
+                url: `https://api.spotify.com/v1/users/${spotifyUserId}/playlists`,
+                data: JSON.stringify({
+                    name: "test",
+                    public: false
+                }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem("accessToken")
+                }
+            }).then(function (response) {
+                console.log("playlist_id", response.id);
+                $('#playlist').attr('src', 'https://open.spotify.com/embed/playlist/' + response.id)
+                obasan(response.id);
+            }).fail(function (error) {
+                console.log(error);
+            });
+        };
+
+        player.addListener('ready', ({
+            device_id
+        }) => {
+            console.log('Ready with Device ID', device_id);
+            const play = ({
+                spotify_uri,
+                playerInstance: {
+                    _options: {
+                        getOAuthToken,
+                        id
+                    }
+                }
+            }) => {
+                getOAuthToken(access_token => {
+                    //アーティスト検索リスト作成-------------------
+                    if (gon.current_artist != null) {
+                        let track_ids_json = gon.recommendations_track_ids_json;
+                        track_ids = JSON.parse(track_ids_json);
+                        let sum_duration = 0;
+                        console.log(gon.travel_time);
+                        console.log(track_ids);
+                        for (var i = 0; i < track_ids.length; i++) {
+                            console.log(track_ids.uri)
+                            if (sum_duration <= gon.travel_time) {
+                                sum_duration += track_ids[i].duration_ms;
+                                track_uris.push(track_ids[i].uri);
+                            }
+                        }
+                    } else if (gon.genre == null && gon.current_artist == null) {
+                        //ジャンル検索リスト作成-------------------
+                        let recommendations_track_ids_json = gon.recommendations_track_ids_json;
+                        recommendations_track_ids = JSON.parse(recommendations_track_ids_json);
+                        let sum_duration = 0;
+                        for (let i = 0; i < recommendations_track_ids.length; i++) {
+                            if (sum_duration <= gon.travel_time) {
+                                sum_duration += recommendations_track_ids[i].duration_ms;
+                                track_uris.push(recommendations_track_ids[i].uri);
+                            }
+                        }
+                        console.log(track_uris)
+                        //travel_time内の曲の合計時間
+                        console.log(sum_duration);
+                    } else {
+                        console.log("エラー");
+                    }
+                    console.log(track_uris);
+                    odisan(track_uris);
+                    // fetch(`https://api.spotify.com/v1/me/player/play?device_id=${id}`, {
+                    //     method: 'PUT',
+                    //     body: JSON.stringify({
+                    //         //↓連続再生できるコード
+                    //         "uris": track_uris
+                    //     }),
+                    //     headers: {
+                    //         'Content-Type': 'application/json',
+                    //         'Authorization': `Bearer ${access_token}`
+                    //     }
+                    // });
+                });
+            };
+            play({
+                playerInstance: player,
+            });
+        });
+        player.connect();
+    }
+
+</script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>

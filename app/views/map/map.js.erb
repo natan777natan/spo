@@ -1,0 +1,131 @@
+/* 
+index.html.erbのscript内に
+google mapのインスタンス変数である、
+mapという変数があることに留意
+*/
+
+////////////////実行部分///////////////////
+// Geolocation APIに対応してるかで分岐
+if (navigator.geolocation) {
+    initMarker(directions);
+    getRoute();
+}else{
+    alert("この端末では位置情報が取得できません");
+};
+////////////////ここまで///////////////////
+
+////////////////関数定義部分///////////////////
+
+function initMarker(directions) {
+for (let i = 0; i < directions.length; i++) {
+					directions[i].setMap(null);
+	}
+	directions = [];
+};
+
+// 一番最初に実行される関数
+function getRoute() {
+    // 現在地を取得
+    navigator.geolocation.getCurrentPosition(
+        getCurrentLatLonAndDestinationRoute, // 取得成功した場合
+        errorFunction // 取得失敗した場合
+    );
+};
+
+// 現在地取得メソッド。positionはnavigator.geolocation.getCurrentPosition内で生成されるやつなので、実行時に引数に入れなくていい。
+    function getCurrentLatLonAndDestinationRoute(position) {
+    let current_lat = position.coords.latitude;
+    let current_lon = position.coords.longitude;
+    // debugPrint(current_lat, current_lon);
+    getDistance(current_lat, current_lon);
+};
+
+// 例外処理メソッド。errorはnavigator.geolocation.getCurrentPosition内で生成されるやつなので、実行時に引数に入れなくていい。
+function errorFunction(error){
+    switch(error.code) {
+        case 1: //PERMISSION_DENIED
+        alert("位置情報の利用が許可されていません");
+        break;
+        case 2: //POSITION_UNAVAILABLE
+        alert("現在位置が取得できませんでした");
+        break;
+        case 3: //TIMEOUT
+        alert("タイムアウトになりました");
+        break;
+        default:
+        alert("その他のエラー(エラーコード:"+error.code+")");
+        break;
+    }
+};
+
+//デバッグ用
+function debugPrint(var1, var2) {
+        console.log("===================");
+        console.log("current lat", var1);
+        console.log("current lon", var2);
+        console.log("===================");
+    };
+
+function getDistance(lat, lon) {
+    // directionService: 二点間情報
+    // directionsRenderer: 二点間経路情報
+    let directionService = new google.maps.DirectionsService();
+    let directionsRenderer = new google.maps.DirectionsRenderer();
+    directionsRenderer.setMap(mapInstance);
+
+    // 目的地の座標の情報を持ったインスタンス生成
+    let destination_origin = new google.maps.LatLng(
+        <%= @latlng[0] %>, //latitude
+        <%= @latlng[1] %>  //longitude
+    );
+    //console.log("destionation", destination_position);
+    
+    // 目的地情報をセンターに設定
+    mapInstance.setCenter(destination_origin);
+
+    // 現在地情報：緯度,経度
+    let current_position = lat + "," + lon;
+    // console.log("current_position", current_position);
+    
+    // 目的地情報：ユーザーが入力した文字列
+    let destination_position = <%= @latlng[0] %> + "," + <%= @latlng[1] %>
+
+    // 目的地までの移動手段
+    let travel_mode = "<%= @travel_mode %>"
+    
+    // 経路を知るために現在地、目的地両方の情報を持った変数(hash)
+    let direction_config =  {
+            origin: {query: current_position}, // 現在地情報を原点にする。
+            destination: {query: destination_position}, // ユーザ入力欄から取得
+            travelMode: travel_mode// ドロップダウン
+        }
+        //console.log(direction_config)
+
+    // Directionsを使用して2点間の距離情報などを取得し、Map上に経路を示す。
+    directionService.route(
+        direction_config,
+        function(response, status){
+            if(status === 'OK'){
+                directionsRenderer.setDirections(response);// 経路情報をセッティング
+                directions.push(directionsRenderer);
+                console.log(response);// レスポンス内容(距離情報)))
+                latest_travel_time = response.routes[0].legs[0].duration.text
+                latest_travel_time_value = response.routes[0].legs[0].duration.value
+                console.log("取得", latest_travel_time);// 移動時間取得
+                // Cookies.set('travel_time', response.routes[0].legs[0].duration.text);
+                var pre_travel_time = document.getElementById('travel_time');
+                pre_travel_time.innerHTML = latest_travel_time;
+                //プレイリスト作成のリンク
+                var play_list_src = document.getElementById('play_list_src');
+                var elem = document.createElement('a');
+                elem.href='/music/' + latest_travel_time_value * 1000　+　'/index';
+                elem.appendChild(document.createTextNode('リスト作成'));
+                play_list_src.appendChild(elem);
+
+            }else{
+                console.log('no');
+            };
+        }
+    );
+};
+////////////////ここまで///////////////////

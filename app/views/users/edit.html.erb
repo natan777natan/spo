@@ -1,0 +1,37 @@
+<div class="gradation">
+    <div class="container">
+        <br>
+        <div class="plofile">
+            <div class="overlay"></div>
+            <div class="box ue">
+                <div class="plofile-image">
+                    <%= attachment_image_tag @user, :profile_image, :fill, 100, 100, format: 'jpeg', class: "rounded-circle", fallback: "no_image.jpg" %>
+                </div>
+                <p><%= @user.name %></p>
+                <div class="alert alert-warning" role="alert">
+                    名前とプロフィール画像が可能です。<br>
+                    下のフォームから変更してください。
+                </div>
+            </div>
+            <div class="box shita">
+                <br>
+                <div class="mini_container">
+                    <%= form_for(@user) do |f| %>
+                    <%#= f.attachment_field :profile_image, placeholder: "プロフィール画像", class: "user-edit-form" %>
+                    <div class="custom-file">
+                        <%= f.attachment_field :profile_image, placeholder: "プロフィール画像", class: "custom-file-input", id:"customFile" %>
+                        <label class="custom-file-label" for="customFile" data-browse="参照">ファイルを選択</label>
+                    </div>
+                    <br>
+                    <br>
+                    <%= f.text_field :name, autofocus: true, class:"form-control", id:"inputEmail", placeholder:"名前"%>
+                    <br>
+                    <%= f.submit "変更を保存", class:"btn btn-success" %>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+    </div>
+</div>

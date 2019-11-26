@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Spo</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Abril+Fatface|Noto+Sans+JP|Prata&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/562ca3c57a.js" crossorigin="anonymous"></script>
+  <%= include_gon %>
+  <%= javascript_include_tag "application" %>
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <header id="header">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+
+          <!-- <a class="navbar-brand" href="#"> -->
+          <div class="logo">
+            <%= link_to image_tag("logo2.png", width: 100, alt: "logo"), users_path %>
+          </div>
+          <!-- </a> -->
+          <div>
+
+            <button id="hamburger" onclick="changeColorByAriaExpanded();" class="navbar-toggler" type="button"
+              data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02"
+              aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          </div>
+
+          <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+
+            <% if user_signed_in? %>
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+              <li class="nav-item active">
+                <a class="nav-link disabled">
+                  <p><%= link_to "Map", map_index_path(current_user.id), :style=>"color:gray;" %></p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled">
+                  <p><%= link_to user_path(current_user.id), :style=>"color:gray;" do %>
+                    <%= current_user.name %>さん<br>のマイページ
+                    <% end %></p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled">
+                  <p><%= link_to "User一覧", users_path, :style=>"color:gray;" %></p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled">
+                  <p><%= link_to "Log out", destroy_user_session_path, method: :delete, :style=>"color:gray;" %></p>
+                </a>
+              </li>
+            </ul>
+            <% else %>
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+              <li class="nav-item active">
+                <a class="nav-link">
+                  <p><%= link_to "Sign up", new_user_registration_path, :style=>"color:gray;" %></p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link">
+                  <p><%= link_to "Log in", new_user_session_path, :style=>"color:gray;" %></p>
+                </a>
+              </li>
+            </ul>
+            <% end %>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <div class="body-wrapper">
+      <%= yield %>
+    </div>
+
+    <footer>
+      <p class="small">natsuki yuasa 2019</p>
+    </footer>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script> -->
+  <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
+</body>
+
+</html>

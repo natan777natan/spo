@@ -1,0 +1,70 @@
+<div class="gradation">
+    <div class="container">
+        <br>
+        <% if flash[:artist_genre] %>
+        <p class="alert alert-success"><%= flash[:artist_genre] %></p>
+        <% end %>
+        <div class="plofile">
+            <div class="overlay"></div>
+            <div class="box ue">
+                <%= link_to edit_user_path(current_user) do %>
+                <div class="plofile-image">
+                    <%= attachment_image_tag @user, :profile_image, :fill, 100, 100, format: 'jpeg', class: "rounded-circle", fallback: "no_image.jpg" %>
+                </div>
+                <% end %>
+                <%= link_to edit_user_path(current_user) do %>
+                <p><%= @user.name %></p>
+                <% end %>
+                <p>My Genre : <%= @user.genre %></p>
+                <p>My favotite artist: <%= @user.artist %></p>
+            </div>
+
+            <div class="box shita">
+                <br>
+                <%=link_to "follow一覧", follows_user_path(@user.id), class: "btn btn-primary", :style=>"font-size: 15px;" %>
+                <%=link_to "follwer一覧", followers_user_path(@user.id), class: "btn btn-info", :style=>"font-size: 15px;" %>
+
+                <!-- 好きなジャンル入れるフォーム -->
+                <hr>
+                <div class="mini_container">
+                    <% if current_user == @user %>
+                    <%= form_for @user do |f| %>
+                    <div class="row">
+                        <div class="col-6">
+                            <%= f.select :genre, ["anime","blues","club","acoustic","disney","edm","electro","hip-hop","j-idol","j-pop","j-rock","pop","afrobeat","alt-rock","alternative","ambient","black-metal","bluegrass","bossanova","brazil","breakbeat","british","cantopop","chicago-house","children","chill","classical","comedy","country","dance","dancehall","death-metal","deep-house","detroit-techno","disco","drum-and-bass","dub","dubstep","electronic","emo","folk","forro","french","funk","garage","german","gospel","goth","grindcore","groove","grunge","guitar","happy","hard-rock","hardcore","hardstyle","heavy-metal","holidays","honky-tonk","house","idm","indian","indie","indie-pop","industrial","iranian","j-dance","jazz","k-pop","kids","latin","latino","malay","mandopop","metal","metal-misc","metalcore","minimal-techno","movies","mpb","new-age","new-release","opera","pagode","party","philippines-opm","piano","pop-film","post-dubstep","power-pop","progressive-house","psych-rock","punk","punk-rock","r-n-b","rainy-day","reggae","reggaeton","road-trip","rock","rock-n-roll","rockabilly","romance","sad","salsa","samba","sertanejo","show-tunes","singer-songwriter","ska","sleep","songwriter","soul","soundtracks","spanish","study","summer","swedish","synth-pop","tango","techno","trance","trip-hop","turkish","work-out","world-music"], {}, {class: "form-control"} %>
+
+                        </div>
+                        <div class="col-3">
+                            <%= f.submit 'ジャンル登録', class:"btn btn-secondary mr-0", :style=>"font-size: 15px;" %>
+                        </div>
+                    </div>
+                    <% end %>
+                    <br>
+                    <!-- 好きなアーティスト入れるフォーム -->
+                    <%= form_for @user do |f| %>
+                    <div class="row">
+                        <div class="col-8">
+                            <%= f.text_field :artist, class:"form-control", id:"validationDefault02", :placeholder => "favorite artist", :style=>"font-size: 15px;" %>
+
+                        </div>
+                        <div class="col-3">
+                            <%= f.submit '登録', class:"btn btn-secondary", :style=>"font-size: 15px;" %>
+                        </div>
+                    </div>
+                    <% end %>
+                    <% end %>
+
+                    <% if current_user != @user %>
+                    <% if @user.followed_by?(current_user) %>
+                    <%=link_to "フォロー解除", user_relationships_path(@user.id), method: :delete, class: "btn btn-danger" %>
+                    <% else %>
+                    <%=link_to "フォローする", user_relationships_path(@user.id), method: :post, class: "btn btn-success"%>
+                    <% end %>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+    </div>
+</div>
