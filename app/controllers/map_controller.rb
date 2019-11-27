@@ -1,4 +1,5 @@
 class MapController < ApplicationController
+
     def index
         google_api_key = ENV["GOOGLE_API_KEY"]
         @google_uri = "https://maps.googleapis.com/maps/api/js?key=#{google_api_key}&callback=initMap"

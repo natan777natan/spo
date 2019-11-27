@@ -1,4 +1,5 @@
 class MusicController < ApplicationController
+before_action :authenticate_user!
     def index
         params[:travel_time]
         spotify_client_id = ENV["SPOTIFY_CLIENT_ID"]
