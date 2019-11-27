@@ -94,7 +94,7 @@
                                 track_uris.push(track_ids[i].uri);
                             }
                         }
-                    } else if (gon.genre == null && gon.current_artist == null) {
+                    } else if (gon.genre != null && gon.current_artist == null) {
                         //ジャンル検索リスト作成-------------------
                         let recommendations_track_ids_json = gon.recommendations_track_ids_json;
                         recommendations_track_ids = JSON.parse(recommendations_track_ids_json);
