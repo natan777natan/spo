@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+    before_action :authenticate_user!
+    before_action :correct_user, only: [:show, :edit, :update, :create]
+    before_action :spotify_login
     def destroy
         # user = User.find(params[:id])
         # user.destroy
@@ -58,6 +61,11 @@ class UsersController < ApplicationController
     def user_params
         params.require(:user).permit(:name, :profile_image, :genre, :artist)
     end
-
+    def correct_end_user
+    end_user = EndUser.find(params[:id])
+    if current_end_user != end_user
+    redirect_to end_user_path(current_end_user.id)
+    end
+end
 end
 

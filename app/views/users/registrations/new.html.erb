@@ -9,17 +9,17 @@
       <%= render "devise/shared/error_messages", resource: resource %>
 
       <div class="field">
-        <p><%= f.label :なまえ %><br />
+        <p class="pp"><%= f.label :name %><br />
           <%= f.text_field :name, autofocus: true, autocomplete: "name" %></p>
       </div>
 
       <div class="field">
-        <p><%= f.label :email %><br />
+        <p class="pp"><%= f.label :email %><br />
           <%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
       </div>
 
       <div class="field">
-        <p><%= f.label :password %>
+        <p class="pp"><%= f.label :password %>
           <% if @minimum_password_length %>
           <em>(<%= @minimum_password_length %> characters minimum)</em>
           <% end %><br />
@@ -27,16 +27,18 @@
       </div>
 
       <div class="field">
-        <p><%= f.label :password_confirmation %><br />
+        <p class="pp"><%= f.label :password_confirmation %><br />
           <%= f.password_field :password_confirmation, autocomplete: "new-password" %></p>
       </div>
 
-      <div class="actions btn btn-light">
+      <div class="actions btn btn-primary">
         <%= f.submit "Sign up" %>
       </div>
       <% end %>
       <br>
-      <%= render "users/shared/links" %>
+      <div class="actions btn btn-light">
+        <%= render "users/shared/links" %>
+      </div>
     </div>
   </div>
 </div>
