@@ -61,10 +61,10 @@ class UsersController < ApplicationController
     def user_params
         params.require(:user).permit(:name, :profile_image, :genre, :artist)
     end
-    def correct_end_user
-    end_user = EndUser.find(params[:id])
-    if current_end_user != end_user
-    redirect_to end_user_path(current_end_user.id)
+    def correct_user
+    user = User.find(params[:id])
+    if current_user != user
+    redirect_to user_path(current_user.id)
     end
 end
 end
