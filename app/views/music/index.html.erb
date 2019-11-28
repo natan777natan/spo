@@ -15,6 +15,7 @@
 <script>
     let track_uris = [];
     window.onSpotifyWebPlaybackSDKReady = () => {
+        console.log("onSpotifyWebPlaybackSDKReady");
         console.log(localStorage.getItem("accessToken"));
 
         let player = new Spotify.Player({
