@@ -74,6 +74,19 @@ a:hover {
 
 //--------------背景ここまで----------------
 
+// ul.cp_list {
+// 	position: relative;
+// 	padding: 0;
+// 	list-style-type: none;
+// }
+// ul.cp_list li {
+// 	padding: 0.5em;
+// 	margin-bottom: 3px;
+// 	line-height: 1.5;
+// 	border-left: solid 15px rgb(233, 4, 176);
+// 	background: rgb(241, 150, 214);
+	
+// }
 //----------header--------------
 
 header {
@@ -90,9 +103,9 @@ header {
 // .body-wrapper {
 //     padding: 0 0 80px;
 // }
-.navbar {
-    height: 40px;
-} 
+// .navbar {
+//     height: 40px;
+// } 
 .nav-item {
     margin-bottom: 30px;
 }
@@ -367,14 +380,12 @@ li {
     .social i {
         
         }
-
     .navbar>.container-fluid {
     display: inline-block !important;
     }
     .logo{
         float:left;
     }
-
     #hamburger{
         float: right;
     }
@@ -385,7 +396,7 @@ li {
 
 
 /*タブレット縦置きサイズ（768px）程度の画面の大きさ以下に適応される設定*/
-@media screen and (max-width: 768px) {
+@media screen and (min-width: 768px) {
     .social i {
         
         }
@@ -396,12 +407,15 @@ li {
     .logo{
         float:left;
     }
-
     #hamburger{
-        float: right;
+        display: none;
     }
     .navbar-toggler {
         margin-top: 6px;
     }
+    .container-fluid {
+        height: 50px;
+    }
+    
 }
 
