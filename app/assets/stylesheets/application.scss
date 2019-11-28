@@ -354,12 +354,11 @@ li {
 
 
 
-//スマートフォンサイズ（425px）以下の際に適用される設定 */
-@media screen and (max-width:425px) {  
-    .social i {
-        
+//スマートフォンサイズ（767px）以上の際に適用される設定 */
+@media screen and (max-width:767px) {  
+    p {
+            color: grey;
         }
-
     .navbar>.container-fluid {
     display: inline-block !important;
     }
@@ -375,31 +374,8 @@ li {
     }
 }
 
-/*タブレット横置き1024px程度の大きさいかに適用される設定  */
-@media screen and (max-width: 1024px) {
-    .social i {
-        
-        }
-    .navbar>.container-fluid {
-    display: inline-block !important;
-    }
-    .logo{
-        float:left;
-    }
-    #hamburger{
-        float: right;
-    }
-    .navbar-toggler {
-        margin-top: 6px;
-    }
-}
-
-
-/*タブレット縦置きサイズ（768px）程度の画面の大きさ以下に適応される設定*/
+/*タブレット縦置きサイズ（768px）程度の画面の大きさ以上に適応される設定*/
 @media screen and (min-width: 768px) {
-    .social i {
-        
-        }
 
     .navbar>.container-fluid {
     display: inline-block !important;
@@ -419,3 +395,18 @@ li {
     
 }
 
+/*タブレット横置き1024px程度の大きさ以上に適用される設定  */
+@media screen and (min-width: 1024px) {
+    .navbar>.container-fluid {
+    display: inline-block !important;
+    }
+    .logo{
+        float:left;
+    }
+    #hamburger{
+        float: right;
+    }
+    .navbar-toggler {
+        margin-top: 6px;
+    }
+}

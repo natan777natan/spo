@@ -40,41 +40,29 @@
 
           <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
             <% if user_signed_in? %>
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <ul class="navbar-nav">
               <li class="nav-item active">
-                <a class="nav-link disabled">
-                  <p><%= link_to "Map", map_index_path(current_user.id), :style=>"color:gray;" %></p>
-                </a>
+                <%= link_to "Map", map_index_path(current_user.id), class: "nav-link" %>
               </li>
               <li class="nav-item">
-                <a class="nav-link disabled">
-                  <p><%= link_to user_path(current_user.id), :style=>"color:gray;" do %>
-                    <%= current_user.name %>さん<br>のマイページ
-                    <% end %></p>
-                </a>
+                <%= link_to user_path(current_user.id), class:"nav-link" do %>
+                <%= current_user.name %>さん<br>のマイページ
+                <% end %>
               </li>
               <li class="nav-item">
-                <a class="nav-link disabled">
-                  <p><%= link_to "User一覧", users_path, :style=>"color:gray;" %></p>
-                </a>
+                <%= link_to "User一覧", users_path, class:"nav-link" %>
               </li>
               <li class="nav-item">
-                <a class="nav-link disabled">
-                  <p><%= link_to "Log out", destroy_user_session_path, method: :delete, :style=>"color:gray;" %></p>
-                </a>
+                <%= link_to "Log out", destroy_user_session_path, method: :delete, class:"nav-link" %>
               </li>
             </ul>
             <% else %>
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
               <li class="nav-item active">
-                <a class="nav-link">
-                  <p><%= link_to "Sign up", new_user_registration_path, :style=>"color:gray;" %></p>
-                </a>
+                <%= link_to "Sign up", new_user_registration_path, class:"nav-link" %>
               </li>
               <li class="nav-item">
-                <a class="nav-link">
-                  <p><%= link_to "Log in", new_user_session_path, :style=>"color:gray;" %></p>
-                </a>
+                <%= link_to "Log in", new_user_session_path, class:"nav-link" %>
               </li>
             </ul>
             <% end %>
