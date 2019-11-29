@@ -43,8 +43,7 @@ before_action :authenticate_user!
         gon.travel_time = @travel_time
         @sum_duration = 0
     end
-    #def music
-        #params[:travel_time]
-    #end
+    def about
+    end
 
 end

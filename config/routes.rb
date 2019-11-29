@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   resources :map, only: [:index]
   get '/map_request', to: 'map#map', as: 'map_request'
   get '/music/:travel_time/index', to: 'music#index', as: 'music_request'
+  get '/music/about', to: 'music#about', as: 'music_about'
   
   
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

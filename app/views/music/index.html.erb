@@ -100,6 +100,7 @@
                         let recommendations_track_ids_json = gon.recommendations_track_ids_json;
                         recommendations_track_ids = JSON.parse(recommendations_track_ids_json);
                         let sum_duration = 0;
+                        console.log(recommendations_track_ids);
                         for (let i = 0; i < recommendations_track_ids.length; i++) {
                             if (sum_duration <= gon.travel_time) {
                                 sum_duration += recommendations_track_ids[i].duration_ms;
