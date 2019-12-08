@@ -5,8 +5,6 @@
         <div class="minimini_container">
             <h2>Where do you<br>
                 want to go?</h2>
-
-
             <!-- form_withはデフォルトでremote: trueの挙動になる -->
             <br>
             <%= form_with url: map_request_path, id:"modal", method: :get,remote: true do |f|%>
@@ -40,7 +38,6 @@
                         <div class="text-center">
                             <div id="play_list_src" class="btn btn-light"></div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -48,11 +45,6 @@
     </div>
     <% end %>
 </div>
-
-
-
-
-
 <style>
     #map {
         height: 300px;
