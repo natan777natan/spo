@@ -26,7 +26,7 @@
             },
             volume: 0.1
         });
-        let obasan = function (playlist_id) {
+        let add_playlist = function (playlist_id) {
             $.ajax({
                 method: 'POST',
                 url: `https://api.spotify.com/v1/playlists/${playlist_id}/tracks`,
@@ -38,13 +38,13 @@
                     'Authorization': 'Bearer ' + localStorage.getItem("accessToken")
                 }
             }).then(function (response) {
-                console.log("obasanResponse", response);
+                console.log("AddPlaylistResponse", response);
 
             }).fail(function (error) {
                 console.log(error);
             });
         };
-        let odisan = function (track_uris) {
+        let new_playlist = function (track_uris) {
             let spotifyUserId = localStorage.getItem("spotifyUserId");
             $.ajax({
                 type: 'POST',
@@ -60,7 +60,7 @@
             }).then(function (response) {
                 console.log("playlist_id", response.id);
                 $('#playlist').attr('src', 'https://open.spotify.com/embed/playlist/' + response.id)
-                obasan(response.id);
+                add_playlist(response.id);
             }).fail(function (error) {
                 console.log(error);
             });
@@ -113,7 +113,7 @@
                         console.log("エラー");
                     }
                     console.log(track_uris);
-                    odisan(track_uris);
+                    new_playlist(track_uris);
                     // fetch(`https://api.spotify.com/v1/me/player/play?device_id=${id}`, {
                     //     method: 'PUT',
                     //     body: JSON.stringify({
