@@ -5,19 +5,21 @@ before_action :authenticate_user!
         spotify_client_id = ENV["SPOTIFY_CLIENT_ID"]
         spotify_secret_id = ENV["SPOTIFY_SECRET_ID"]
         RSpotify.authenticate(spotify_client_id, spotify_secret_id)
+        # current_userが入力したアーティスト名
         current_artist = current_user.artist
         gon.current_artist = current_artist
+        # current_userが入力したgenre名
         @genre = current_user.genre
         gon.genre = @genre
 
         
         if current_artist.present?
-            # アルバム検索するとき-------------------
+            # アーティスト検索するとき-------------------
             search_artists = RSpotify::Artist.search(current_artist)
             @artist = search_artists.first
             albums = @artist.albums
             tracks = []
-            albums[0..3].each do |album|
+            albums[0..5].each do |album|
                 tracks << album.tracks
             end
             tracks.flatten!            

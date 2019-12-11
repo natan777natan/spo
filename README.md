@@ -15,8 +15,9 @@ https://smoothie-777.com
  
 ## 必要要件
  
-- PC Crome
-- 他のデバイスはspotify API未対応
+- PC Chrome
+- Android Chrome (注意：Encrypted Media Extensions API未対応デバイスは不可)
+- 他のデバイス(iPhone)はspotify API未対応
  
 ## 使い方
  
