@@ -83,15 +83,23 @@
                     //アーティスト検索リスト作成-------------------
                     if (gon.current_artist != null) {
                         let track_ids_json = gon.recommendations_track_ids_json;
+                        console.log(track_ids_json);
                         track_ids = JSON.parse(track_ids_json);
                         let sum_duration = 0;
                         console.log(gon.travel_time);
                         console.log(track_ids);
-                        for (var i = 0; i < track_ids.length; i++) {
-                            console.log(track_ids.uri)
+                        //track_ids配列の中にある重複を取り除く
+                        let same_tracks = track_ids.filter(function (same_track, index, track_ids) {
+                            let track_durations = track_ids.map(same_track => same_track.duration_ms);
+                            let track_same_names = track_ids.map(same_track => same_track.name);
+                            return track_durations.indexOf(same_track.duration_ms) === index && track_same_names.indexOf(same_track.name) === index;
+                        });
+                        console.log(same_tracks);
+
+                        for (let i = 0; i < same_tracks.length; i++) {
                             if (sum_duration <= gon.travel_time) {
-                                sum_duration += track_ids[i].duration_ms;
-                                track_uris.push(track_ids[i].uri);
+                                sum_duration += same_tracks[i].duration_ms;
+                                track_uris.push(same_tracks[i].uri);
                             }
                         }
                     } else if (gon.genre != null && gon.current_artist == null) {
